@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>移动网盘</title>
+    <link rel="stylesheet" th:href="@{/css/public.css}" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+
+
+</head>
+<body style="min-width:1000px;">
+<div class="btn_menu">
+    <div class="btn_orange fl" onclick="uploadfile()"><img src="images/icon/icon11.gif"/>上传文件<input name="choosefile"
+                                                                                                    type="file"
+                                                                                                    class="sc_file"
+                                                                                                    id="choosefile"/>
+    </div>
+    <div class="btn_glay ml20 mr20" id="new_file"><img src="images/icon/icon12.gif"/>新建文件夹</div>
+    <div class="btn_glay1" onclick="show('cover','pop_download');"><img src="images/icon/icon13.gif"/>下载</div>
+    <div class="btn_glay2" onclick="show('cover','pop_delete');"><img src="images/icon/icon14.gif"/>删除</div>
+    <div class="btn_glay2" onclick="show('cover','pop_move');"><img src="images/icon/icon15.gif"/>移动到</div>
+    <div class="btn_glay2" onclick="show('cover','pop_copy');"><img src="images/icon/icon16.gif"/>复制到</div>
+    <div class="btn_glay2" id="rename"><img src="images/icon/icon17.gif"/>重命名</div>
+    <div class="btn_glay3" onclick="location='wdgx.htm'"><img src="images/icon/icon18.gif"/>分享</div>
+    <div class="btn_glay ml20 mr20"><img src="images/icon/icon19.gif" style=" margin-right:0px;"/></div>
+    <div class="fr"><a href="main_list.htm"><img src="images/icon/icon20_1.gif"/></a><a href="main.htm"><img
+            src="images/icon/icon21.gif"/></a></div>
+</div>
+<div class="clear"></div>
+<div class="all_files_title">
+    <input name="" type="checkbox" value="" class="fl mr10 mt15" id="check_all"/> 全部文件
+</div>
+<div class="clear"></div>
+<div class="file_list">
+    <div class="file_list1">
+        <div class="file_box" ondblclick="location='main_list_file.htm'"><img src="images/file_pic.gif" class="pic"/><br/>新建文件夹
+        </div>
+        <div class="file_box" ondblclick="location='main_list_file.htm'"><img src="images/file_pic.gif" class="pic"/><br/>2020年度图片
+        </div>
+        <div class="file_box"><img src="images/txt_pic.gif" class="pic"/><br/>经典文档</div>
+        <div class="file_box" ondblclick="show('cover','pop_pic');"><img src="images/pic1.png" width="90px"
+                                                                         height="90px" class="pic"/><br/>和5G
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+
+<!--提示弹出层 开始-->
+<div id="cover"></div>
+
+<!--下载 弹出框 开始-->
+<div class="boxT1 w550" id="pop_download">
+    <div class="bar tcMove"><a class="close" href="javascript:hide('cover','pop_download');">&times;</a><span>下载</span>
+    </div>
+    <div class="cont">
+        <div class="pl25 line25 download pos_r mt20">
+            <p>文件名：<input name="" type="text" class="input1"/><span style="left:360px;">图片 28KB</span></p>
+            <p class="mt20">下载到：<select name="" class="input2 mr5">
+                <option>C:\Users\Desktop</option>
+            </select><input name="" class="btnT3" type="button" value="浏览"/> <span style="left:280px;">剩余64.0 GB</span>
+            </p>
+        </div>
+        <div class="clear"></div>
+        <div class=" mt60 mb10 text_c">
+            <a class="btnT2 mr10" href="javascript:hide('cover','pop_download');">直接打开</a>
+            <a class="btnT1 mr10" href="javascript:hide('cover','pop_download');">下载</a>
+            <a class="btnT2" href="javascript:hide('cover','pop_download');">取 消</a>
+        </div>
+    </div>
+</div>
+<!--下载 弹出框 结束-->
+
+<!--删除 弹出框 开始-->
+<div class="boxT1 w450" id="pop_delete">
+    <div class="bar tcMove"><a class="close" href="javascript:hide('cover','pop_delete');">&times;</a><span>确认删除</span>
+    </div>
+    <div class="cont  line30">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td rowspan="2" align="right" width="25%"><img src="images/dele_pic2.png"/></td>
+                <td>&nbsp;确认要把所选文件放入回收站吗？</td>
+            </tr>
+            <tr>
+                <td><span class="gray font12">&nbsp;已删除的文件可以在回收站找到</span></td>
+            </tr>
+        </table>
+        <div class="mt20 mb10 text_c">
+            <a class="btnT1 mr10" href="javascript:hide('cover','pop_delete');javascript:show('cover','pop_delete1');">确
+                定</a>
+            <a class="btnT2" href="javascript:hide('cover','pop_delete');">取 消</a>
+        </div>
+    </div>
+</div>
+
+<div class="boxT1 w450" id="pop_delete1">
+    <div class="bar tcMove"><a class="close" href="javascript:hide('cover','pop_delete1');">&times;</a><span>确认删除</span>
+    </div>
+    <div class="cont line30">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td rowspan="2" align="right" width="25%"><img src="images/dele_pic.png"/></td>
+                <td>&nbsp;确定要和子文件一起删除吗？</td>
+            </tr>
+            <tr>
+                <td><span class="gray font12">&nbsp;已删除的文件可以在回收站找到</span></td>
+            </tr>
+        </table>
+        <div class="mt20 mb10 text_c">
+            <a class="btnT1 mr10" href="javascript:hide('cover','pop_delete1');">确 定</a>
+            <a class="btnT2" href="javascript:hide('cover','pop_delete1');">取 消</a>
+        </div>
+    </div>
+</div>
+<!--删除 弹出框 结束-->
+
+
+<!--移动到 弹出框 开始-->
+<div class="boxT1 w450" id="pop_move">
+    <div class="bar tcMove"><a class="close" href="javascript:hide('cover','pop_move');">&times;</a><span>移动到</span>
+    </div>
+    <div class="cont line30">
+        <p class="font14">选择移动到的位置</p>
+        <div class="tree_box">
+            <img src="images/tree.gif"/>
+        </div>
+        <div class="mt20 mb10 text_c">
+            <a class="btnT1 mr10" href="javascript:hide('cover','pop_move');">确认移动</a>
+            <a class="btnT2" href="javascript:hide('cover','pop_move');">取 消</a>
+        </div>
+    </div>
+</div>
+<!--移动到 弹出框 结束-->
+
+<!--复制到 弹出框 开始-->
+<div class="boxT1 w450" id="pop_copy">
+    <div class="bar tcMove"><a class="close" href="javascript:hide('cover','pop_copy');">&times;</a><span>复制到</span>
+    </div>
+    <div class="cont line30">
+        <p class="font14">选择复制到的位置</p>
+        <div class="tree_box">
+            <img src="images/tree.gif"/>
+        </div>
+        <div class="mt20 mb10 text_c">
+            <a class="btnT1 mr10" href="javascript:hide('cover','pop_copy');">确认复制</a>
+            <a class="btnT2" href="javascript:hide('cover','pop_copy');">取 消</a>
+        </div>
+    </div>
+</div>
+<!--复制到 弹出框 结束-->
+
+<!--图片预览 弹出框 开始-->
+<div class="boxT1" id="pop_pic">
+    <a class="close pos_r fr" href="javascript:hide('cover','pop_pic');"><img src="images/close_delete.png"
+                                                                              class="tc_dele"/></a>
+    <div class="cont text_c line30">
+        <img src="images/pic1.png" width="700"/>
+    </div>
+</div>
+<!--图片预览 弹出框 结束-->
+
+<script type="text/javascript" th:src="@{/js/jquery-1.9.1.js}"></script>
+<script type="text/javascript" th:src="@{/js/public.js}"></script>
+
+<script>
+
+    layui.use('upload', function () {
+        var upload = layui.upload;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#choosefile', //绑定元素
+            accept: 'file',
+            size: 10240000,
+            //multiple: true,
+            url: './uploadfile', //上传接口
+            method: 'POST',
+            done: function (res) {
+                //上传完毕回调
+                layer.alert("上传成功！" + res.msg, {
+                    icon: 5,
+                    title: "提示"
+                });
+                $("#sourcepath").val(res.msg);
+            }
+            , error: function (res) {
+                //请求异常回调
+                layer.alert("后台出错", {
+                    icon: 5,
+                    title: "提示"
+                });
+            }
+        });
+    });
+
+
+</script>
+<script type="text/javascript" th:src="@{/js/jquery-1.9.1.js}"></script>
+<script type="text/javascript" th:src="@{/js/public.js}"></script>
+
+</body>
+</html>
