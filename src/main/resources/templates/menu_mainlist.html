@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/public.css}" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+
+</head>
+<body style="background:#43484d; ">
+<div class="nav_content">
+    <img src="images/menu_top.gif"/>
+    <ul>
+        <li class="active"><a href="main.htm" target="main" title="全部文件"><img src="images/icon/icon1.png"/>全部文件</a></li>
+        <li><img src="images/icon/icon2.png"/>文档</li>
+        <li><img src="images/icon/icon3.png"/>图片</li>
+        <li><img src="images/icon/icon4.png"/>音乐</li>
+        <li><img src="images/icon/icon5.png"/>视频</li>
+        <li class="borb"><img src="images/icon/icon6.png"/>其它</li>
+        <li><a href="gxgl.htm" target="main" title="我的共享"><img src="images/icon/icon7.png"/>我的共享</a></li>
+        <li class="borb"><a href="gggx.htm" target="main" title="公共共享"><img src="images/icon/icon8.png"/>公共共享</a></li>
+        <li class="borb"><a href="wdhy.htm" target="main" title="我的好友"><img src="images/icon/icon9.png"/>我的好友</a></li>
+        <li class="borb"><a href="hsz.htm" target="main" title="回收站"><img src="images/icon/icon10.png"/>回收站</a></li>
+    </ul>
+    <div class=" pl25 line30 mt10">
+        <div class="space">
+            <div class="space_1" style="width:24%"></div>
+        </div>
+        <p>123.21G/2253G</p>
+        <p class="mt10">我的文件数：377</p>
+        <p>共享文件数：239</p>
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/js/jquery-1.9.1.js}"></script>
+<script type="text/javascript" th:src="@{/js/public.js}"></script>
+</body>
+</html>

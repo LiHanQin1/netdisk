@@ -9,21 +9,16 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" th:href="@{/css/font.css}">
     <link rel="stylesheet" th:href="@{/css/xadmin.css}">
-    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<!--    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>-->
     <script type="text/javascript" th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
     <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
 
-
 </head>
 <body style="min-width:1000px;">
 <div class="btn_menu">
-    <div class="btn_orange fl" onclick="uploadfile()"><img src="images/icon/icon11.gif"/>上传文件<input name="choosefile"
-                                                                                                    type="file"
-                                                                                                    class="sc_file"
-                                                                                                    id="choosefile"/>
-    </div>
+    <div class="btn_orange fl"><img src="images/icon/icon11.gif"/>上传文件<input name="choosefile" type="file" class="sc_file" id="choosefile"/></div>
     <div class="btn_glay ml20 mr20" id="new_file"><img src="images/icon/icon12.gif"/>新建文件夹</div>
     <div class="btn_glay1" onclick="show('cover','pop_download');"><img src="images/icon/icon13.gif"/>下载</div>
     <div class="btn_glay2" onclick="show('cover','pop_delete');"><img src="images/icon/icon14.gif"/>删除</div>
@@ -160,8 +155,7 @@
 
 <!--图片预览 弹出框 开始-->
 <div class="boxT1" id="pop_pic">
-    <a class="close pos_r fr" href="javascript:hide('cover','pop_pic');"><img src="images/close_delete.png"
-                                                                              class="tc_dele"/></a>
+    <a class="close pos_r fr" href="javascript:hide('cover','pop_pic');"><img src="images/close_delete.png" class="tc_dele"/></a>
     <div class="cont text_c line30">
         <img src="images/pic1.png" width="700"/>
     </div>
@@ -171,8 +165,8 @@
 <script type="text/javascript" th:src="@{/js/jquery-1.9.1.js}"></script>
 <script type="text/javascript" th:src="@{/js/public.js}"></script>
 
+</body>
 <script>
-
     layui.use('upload', function () {
         var upload = layui.upload;
         //执行实例
@@ -200,11 +194,5 @@
             }
         });
     });
-
-
 </script>
-<script type="text/javascript" th:src="@{/js/jquery-1.9.1.js}"></script>
-<script type="text/javascript" th:src="@{/js/public.js}"></script>
-
-</body>
 </html>

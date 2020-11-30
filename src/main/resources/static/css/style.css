@@ -1,0 +1,54 @@
+ @charset "utf-8";
+/* CSS Document */
+/*头部按钮栏*/
+.btn_menu{ height:45px; display:block; background:#f4f5f0; border-bottom:1px solid #dfdfdf; padding:14px 20px 0 20px; }
+	.btn_menu img{ float:left; margin:6px 10px 0 0;}
+
+
+
+.all_files_title{ height:45px; line-height:45px; background:#f5f5f5; padding:0 20px; }
+.sc_file{width:50px; position:absolute; left:65px; top:20px; opacity:0; filter:alpha(opacity=0);}
+
+/*文件排版*/
+.file_list{ padding:20px;}
+	.file_box{ width:139px; height:139px; display:block; border:1px solid #FFF; text-align:center; float:left; margin:10px 20px; *margin:5px;}
+		.file_box .pic{ margin-top:10px; margin-bottom:10px;}
+		.file_box:hover{ border:1px solid #f6b9a4; background:#fff9f6 url(../images/check.gif) left top no-repeat}
+		.file_box.active{ border:1px solid #f6b9a4; background:#fff9f6 url(../images/check.gif) left top no-repeat}
+		
+.new_name{ width:80px; height:20px; border:1px solid #25aaff; line-height:20px;}
+.new_name2{ width:200px; height:20px; border:1px solid #25aaff;  line-height:20px;}
+.new_name3{ width:90px; height:20px; border:1px solid #25aaff; margin-top:9px; float:left;  line-height:20px;}
+.new_name_nor{ width:139px; height:20px; border:0px solid #25aaff; background:none; text-align:center; line-height:20px;}
+.new_name_nor2{ width:200px; height:20px; border:0px solid #25aaff; background:none; text-align:left; line-height:20px;}
+.new_name_nor3{ width:90px; height:20px; border:0px solid #25aaff; margin-top:9px; background:none; text-align:left;  line-height:20px;}
+.download p span{ position:absolute; color:#6e6e6e; font-size:12px;}
+.tree_box{ padding:10px; display:block; border:1px solid #e6e6e6;}
+
+/*列表页*/
+.main_list th{ height:39px; line-height:39px; border-bottom:1px solid #aaaaaa; background:#f2f2f2;  padding:0 8px;}
+.main_list td{ height:45px; line-height:45px; border-bottom:1px solid #dadada; padding:0 8px;}
+.main_list td .icon{ float:left; margin:10px 5px 0 0}
+
+#testTab td.active{ background:#fff9f6;}
+
+
+/*我的共享*/
+.file_list2{ border:1px solid #d5d5d5;}
+.gx_radio input{ float:left; margin-top:10px; *margin-top:5px;}
+.gx_radio span{ float:left; margin:10px 15px 0 5px;}
+.gx_box{ overflow-y:auto; max-height:90px;}
+	.gx_box li{ width:83px; height:32px; border:1px solid #f4a285; background:url(images/bg_gx.gif) repeat-x; line-height:32px; text-align:center; position:relative; float:left; margin:5px;}
+	.gx_box li .gx_dele{ position:absolute; z-index:2; right:0px; top:0px; cursor:pointer;}
+.file_list2_left{ width:180px; float:left;  overflow:auto; border-right:1px solid #d5d5d5;}
+	.file_list2_left li{ line-height:37px; padding-left:20px; cursor:pointer; display:block; height:37px;}
+	.file_list2_left li.on{ background:#ffeee8; font-weight:bold; color:#ff4b13;}
+.file_list2_right{ margin-left:180px; display:block; padding:10px;}
+	
+.table01 td ,.table01 th{ border-top:1px solid #d5d5d5; line-height:35px; text-align:left; padding:0 5px;}
+.main_list td table,.main_list td table th,.main_list td table td,.main_list td table,.table01 td table th,.table01 td table td{ border:0px;} 
+
+/*我的好友*/
+.wdhy_tit{ width:100%; height:40px; background:#e6e6e6;}
+
+#pop_pic{ width:740px;}
