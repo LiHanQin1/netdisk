@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName(value = "t_file")
-public class File {
+public class Files {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
@@ -17,13 +17,13 @@ public class File {
     private Integer fSize;// 文件大小
 
     @TableField(value = "isDir")
-    private Integer isDir; //是否是目录 1是目录 0是文件
+    private Integer isDir; //是否是目录
 
-    @TableField(value = "url")
-    private  String url;  //文件路径
+    @TableField(value = "furl")
+    private  String furl;  //文件路径
 
     @TableField(value = "pid")
-    private Integer pid;  //层级模式，挂在哪里
+    private Integer pid;  //
 
     @TableField(value = "createMan")
     private  Integer createMan; //文件创建人
@@ -31,15 +31,64 @@ public class File {
     @TableField(value = "createtime")
     private String createTime;  //创建时间
 
-    public File() {
+    @TableField(value = "typeid")
+    private Integer typeid;  //
+
+    @TableField(value = "depaid")
+    private Integer depaid;  //
+
+    @TableField(value = "filetype")
+    private String filetype;  //
+    public Files() {
     }
 
-    public File(String fName, String url, Integer pid, Integer createMan, String createTime) {
+    public Files(String fName, String furl, Integer pid, Integer createMan, String createTime) {
         this.fName = fName;
-        this.url = url;
+        this.furl = furl;
         this.pid = pid;
         this.createMan = createMan;
         this.createTime = createTime;
+    }
+
+    public Files(Integer id, String fName, Integer fSize, Integer isDir, String furl, Integer pid, Integer createMan, String createTime, Integer typeid, Integer depaid, Integer depaid1, String filetype) {
+        this.id = id;
+        this.fName = fName;
+        this.fSize = fSize;
+        this.isDir = isDir;
+        this.furl = furl;
+        this.pid = pid;
+        this.createMan = createMan;
+        this.createTime = createTime;
+        this.typeid = typeid;
+        this.depaid = depaid;
+        this.depaid = depaid1;
+        this.filetype = filetype;
+    }
+
+
+
+    public Integer getTypeid() {
+        return typeid;
+    }
+
+    public void setTypeid(Integer typeid) {
+        this.typeid = typeid;
+    }
+
+    public Integer getDepaid() {
+        return depaid;
+    }
+
+    public void setDepaid(Integer depaid) {
+        this.depaid = depaid;
+    }
+
+    public String getFiletype() {
+        return filetype;
+    }
+
+    public void setFiletype(String filetype) {
+        this.filetype = filetype;
     }
 
     public Integer getId() {
@@ -74,12 +123,12 @@ public class File {
         this.isDir = isDir;
     }
 
-    public String getUrl() {
-        return url;
+    public String getFurl() {
+        return furl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setFurl(String furl) {
+        this.furl = furl;
     }
 
     public Integer getPid() {
@@ -113,10 +162,14 @@ public class File {
                 ", fName='" + fName + '\'' +
                 ", fSize=" + fSize +
                 ", isDir=" + isDir +
-                ", url='" + url + '\'' +
+                ", furl='" + furl + '\'' +
                 ", pid=" + pid +
                 ", createMan=" + createMan +
                 ", createTime='" + createTime + '\'' +
+                ", typeid=" + typeid +
+                ", depaid=" + depaid +
+                ", depaid=" + depaid +
+                ", filetype='" + filetype + '\'' +
                 '}';
     }
 }

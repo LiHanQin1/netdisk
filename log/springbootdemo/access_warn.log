@@ -1,2 +1,12 @@
-2020-11-28 09:17:00 1786 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'fileMapper' and 'com.db.mapper.FileMapper' mapperInterface. Bean already defined with the same name!
-2020-11-28 09:17:00 1786 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.db.mapper]' package. Please check your configuration.
+2020-12-03 09:52:02 1147 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'fileMapper' and 'com.db.mapper.FileMapper' mapperInterface. Bean already defined with the same name!
+2020-12-03 09:52:02 1147 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'folderMapper' and 'com.db.mapper.FolderMapper' mapperInterface. Bean already defined with the same name!
+2020-12-03 09:52:02 1147 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'userMapper' and 'com.db.mapper.UserMapper' mapperInterface. Bean already defined with the same name!
+2020-12-03 09:52:02 1147 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.db.mapper]' package. Please check your configuration.
+2020-12-03 09:57:38 981  [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'fileMapper' and 'com.db.mapper.FileMapper' mapperInterface. Bean already defined with the same name!
+2020-12-03 09:57:38 981  [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'folderMapper' and 'com.db.mapper.FolderMapper' mapperInterface. Bean already defined with the same name!
+2020-12-03 09:57:38 981  [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'userMapper' and 'com.db.mapper.UserMapper' mapperInterface. Bean already defined with the same name!
+2020-12-03 09:57:38 981  [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.db.mapper]' package. Please check your configuration.
+2020-12-03 10:02:13 965  [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'fileMapper' and 'com.db.mapper.FileMapper' mapperInterface. Bean already defined with the same name!
+2020-12-03 10:02:13 965  [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'folderMapper' and 'com.db.mapper.FolderMapper' mapperInterface. Bean already defined with the same name!
+2020-12-03 10:02:13 965  [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'userMapper' and 'com.db.mapper.UserMapper' mapperInterface. Bean already defined with the same name!
+2020-12-03 10:02:13 965  [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.db.mapper]' package. Please check your configuration.

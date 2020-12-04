@@ -30,12 +30,5 @@ public class IndexController {
         return modelAndView;
     }
 
-    @RequestMapping("/to_main")
-    public ModelAndView to_main(){
-        System.out.println("call to_main ");
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("main");
-        return modelAndView;
-    }
 
 }
