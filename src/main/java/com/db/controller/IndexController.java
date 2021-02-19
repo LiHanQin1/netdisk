@@ -30,5 +30,36 @@ public class IndexController {
         return modelAndView;
     }
 
+    @RequestMapping("/index2")
+    public ModelAndView index2(){
+        //System.out.println(" execute IndexController method");
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("index2");
+        return  modelAndView;
+    }
+
+    @RequestMapping("/to_menu_mainlist2")
+    public ModelAndView to_menu_mainlist2(){
+        System.out.println("call to_menu_mainlist2 ");
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("menu_mainlist2");
+        return modelAndView;
+    }
+
+    @RequestMapping("/to_top2")
+    public ModelAndView to_top2(){
+        System.out.println("call to_top2 ");
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("top2");
+        return modelAndView;
+    }
+
+    @RequestMapping("/to_main2")
+    public ModelAndView to_main2(){
+        System.out.println("call to_main2 ");
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("main2");
+        return modelAndView;
+    }
 
 }

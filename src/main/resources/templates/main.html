@@ -24,13 +24,72 @@
 <div class="btn_menu">
     <div class="btn_orange fl"><img src="images/icon/icon11.gif"/>上传文件<input name="choosefile" type="file"
                                                                              class="sc_file" id="choosefile"/></div>
-    <div class="btn_glay ml20 mr20" id="new_file"><img src="images/icon/icon12.gif"/>新建文件夹</div>
+    <div class="btn_glay ml20 mr20" id="createFolder"><img src="images/icon/icon12.gif"/>新建文件夹</div>
+    <div id="fodername" style="display: none">
+        <br>
+        请输入文件名称: &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="fname">
+    </div>
+    <script>
+        $(function () {
+            $("#createFolder").click(function () {
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    layer.open({
+                        type: 1
+                        , title: "文件夹名称"
+                        , area: '300px'
+
+                        , content: $('#fodername') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                        , btn: ['创建', '取消']
+                        , yes: function (index, layero) {
+                            //按钮【按钮一】的回调
+                            var folderName = $("#fname").val();
+                            if (folderName == null || folderName == "") {
+                                layer.msg("请输入文件夹名称");
+                                return
+                            } else {
+                                $.ajax(
+                                    {
+                                        url: "create_folder",
+                                        data: {folderName: folderName, pid: $("#pid").val()},
+                                        dataType: "text",
+                                        success: function (data) {
+                                            console.log(data)
+                                            layer.msg(data);
+                                            layer.msg("成功！");
+                                            window.parent.location.reload();
+                                        },
+                                        error: function (data) {
+                                            layer.msg("失败！");
+
+                                        }
+
+                                    }
+                                );
+                            }
+                            layer.closeAll(); //疯狂模式，关闭所有层
+                        }
+                        , btn2: function (index, layero) {
+                            $("#fodername").css("display", "none");
+                            //按钮【按钮二】的回调
+                            //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                        , cancel: function () {
+                            //右上角关闭回调
+                            $("#fodername").css("display", "none");
+                            //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                    });
+                });
+            })
+        })
+    </script>
     <div class="btn_glay1" id="div_download"><img src="images/icon/icon13.gif"/>下载</div>
-    <div class="btn_glay2" onclick="show('cover','pop_delete');"><img src="images/icon/icon14.gif"/>删除</div>
+    <div class="btn_glay2" id="file_delete"><img src="images/icon/icon14.gif"/>删除</div>
     <div class="btn_glay2" id="div_copy"><img src="images/icon/icon15.gif"/>复制到</div>
     <div class="btn_glay2" id="div_move"><img src="images/icon/icon16.gif"/>移动到</div>
-    <div class="btn_glay2" id="rename"><img src="images/icon/icon17.gif"/>重命名</div>
-    <div class="btn_glay3" onclick="location='wdgx.htm'"><img src="images/icon/icon18.gif"/>分享</div>
+    <div class="btn_glay2" id="refilename"><img src="images/icon/icon17.gif"/>重命名</div>
+    <div class="btn_glay3"  id="fileshare"><img src="images/icon/icon18.gif"/>分享</div>
     <div class="btn_glay ml20 mr20"><img src="images/icon/icon19.gif" style=" margin-right:0px;"/></div>
     <div class="fr"><a href="main_list.htm"><img src="images/icon/icon20_1.gif"/></a><a href="main.htm"><img
             src="images/icon/icon21.gif"/></a></div>
@@ -43,18 +102,19 @@
 <div class="file_list">
     <div class="file_list1" id="file_list1">
         <div th:each="u:${file}">
-            <a class="abc" th:href="'to_main_list_file?id='+${u.getId()}">
-                <div id="file_1" class="file_box" th:if="${u.getIsDir()==1&&u.getPid()==0}">
-                    <img src="images/file_pic.gif" class="pic"/><br>[[${u.getfName()}]]
+            <div class="abc" th:name="${u.getId()}" th:value="${u.getId()}" href="javascript:void(0);">
+                <div id="file_1" class="file_box" th:value="${u.getId()}" th:if="${u.getIsDir()==1&&u.getPid()==0}">
+                    <a><img src="images/file_pic.gif" class="pic"/><br>[[${u.getfName()}]]
+            </a><input type="hidden" th:value="${u.getId()}"/>
                 </div>
-            </a>
-            <div th:rel="${u.getId()}" class="file_box" th:if="${u.getIsDir()==0&&u.getPid()==0}"
+            </div>
+            <div th:rel="${u.getId()}" class="file_box" th:value="${u.getId()}" th:if="${u.getIsDir()==0&&u.getPid()==0}"
                  th:switch="${u.getTypeid()}">
-                <div th:case="1"><img src="images/txt.jpg" class="pic"><br>[[${u.getfName()}]]</div>
-                <div th:case="2"><img src="images/img_icon_s.gif" class="pic"><br>[[${u.getfName()}]]</div>
-                <div th:case="3"><img src="images/music.jpg" class="pic"><br>[[${u.getfName()}]]</div>
-                <div th:case="4"><img src="images/video.jpg" class="pic"><br>[[${u.getfName()}]]</div>
-                <div th:case="5"><img src="images/zip.jpg" class="pic"><br>[[${u.getfName()}]]</div>
+                <div th:case="1" th:value="${u.getId()}"><img src="images/txt.jpg" class="pic"><br>[[${u.getfName()}]]</div>
+                <div th:case="2" th:value="${u.getId()}"><img src="images/img_icon_s.gif" class="pic"><br>[[${u.getfName()}]]</div>
+                <div th:case="3" th:value="${u.getId()}"><img src="images/music.jpg" class="pic"><br>[[${u.getfName()}]]</div>
+                <div th:case="4" th:value="${u.getId()}"><img src="images/video.jpg" class="pic"><br>[[${u.getfName()}]]</div>
+                <div th:case="5" th:value="${u.getId()}"><img src="images/zip.jpg" class="pic"><br>[[${u.getfName()}]]</div>
             </div>
         </div>
     </div>
@@ -210,17 +270,35 @@
             //alert($(".file_box.active").length);
             var ids = "";
             $(".file_box.active").each(function () {
-                ids += $(this).attr("rel")+",";
+                ids += $(this).attr("rel") + ",";
                 layer.open({
                     type: 2,
-                    width: 600,
-                    height: 1000,
+                    area: ['500px', '300px'],
                     content: 'to_tree?ids=' + ids
                 });
             })
             //打开树形菜单
             // show('cover', 'pop_move');
 
+        });
+    })
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        //注册事件
+        $("#fileshare").click(function () {
+            var ids = "";
+            $(".file_box.active").each(function () {
+                ids += $(this).attr("rel") + ",";
+                layer.open({
+                    type: 2,
+                    title: ["http://localhost:8084/netdisk/to_common_share"],
+                    area: ['500px', '300px'],
+                    content: 'to_file_share_person?ids=' + ids
+                });
+            })
         });
     })
 
@@ -234,19 +312,131 @@
             //alert($(".file_box.active").length);
             var ids = "";
             $(".file_box.active").each(function () {
-                ids += $(this).attr("rel")+",";
+                ids += $(this).attr("rel") + ",";
                 layer.open({
                     type: 2,
-                    width: 100,
-                    height: 2000,
-                    content: 'to_tree?ids=' + ids
+                    area: ['500px', '300px'],
+                    content: 'to_tree?ids=' + ids,
+
                 });
+
             })
             //打开树形菜单
             // show('cover', 'pop_move');
         });
     })
+    //parent.window.location.reload();
+</script>
+<script type="text/javascript">
+    $(function () {
+        // //注册事件
+        $(".abc").dblclick(function () {
+            var id = $(".abc").attr("name");
+            // alert(id);
+            window.location.href = "to_main_list_file?id=" + id;
+        });
 
+    })
+
+    $(function () {
+
+        //注册删除事件
+        $("#file_delete").click(function () {
+            //获取选中的文件ID,JQ获取ID
+            //获取整个file_box,6条记录 $(".file_box.active").length ,加了.active就是获取选中的记录,遍历
+            //alert($(".file_box.active").length);
+            $(".file_box.active").each(function () {
+                show('cover', 'pop_delete');
+                var id = $(this).attr("rel");
+                deteList(id);
+            })
+
+            //打开树形菜单
+
+        });
+    })
+
+    function deteList(id) {
+        $.ajax({
+            url: "file_delete",
+            data: {"id": id},
+            success: function (data) {
+                //刷新页面
+                parent.window.location.reload();
+            }
+        })
+    }
+
+</script>
+<div id="div2" style="display: none">
+    <br>
+    请输入新名称：             <input type="text" id="newfilename">
+</div>
+<script>
+    //重命名
+    $(function () {
+        $("#refilename").click(function () {
+            layui.use('layer', function () {
+                var layer = layui.layer;
+                if ($(".file_box.active").length == 1) {
+                    var fileId = "";
+                    var oldname = "";
+                    $(".file_box.active").each(function () {
+                        fileId = $(this).attr("value");
+                        oldname = $(this).text();
+                    })
+                    console.log(fileId)
+                    oldname = oldname.trim()
+                    $("#newfilename").val(oldname);
+                    console.log(oldname)
+                    layer.open({
+                        type: 1
+                        , title: "输入新文件名"
+                        , area: '300px'
+                        , content: $('#div2') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                        , btn: ['重命名', '取消']
+                        , yes: function (index, layero) {
+                            //按钮【按钮一】的回调
+                            var newname = $("#newfilename").val().trim();
+                            if (newname == oldname) {
+                                layer.msg("名称没有被改变");
+                                return
+                            } else {
+                                $.ajax(
+                                    {
+                                        url: "file_rename",
+                                        data: {newname: newname, id: fileId},
+                                        dataType: "text",
+                                        success: function (data) {
+                                            layer.msg("成功!!!");
+                                        },
+                                        error: function (data) {
+                                            layer.msg("失败！");
+
+                                        }
+                                    }
+                                );
+                                window.parent.location.reload();
+                            }
+                            layer.closeAll(); //疯狂模式，关闭所有层
+                        }
+                        , btn2: function (index, layero) {
+                            $("#div2").css("display", "none");
+                            //按钮【按钮二】的回调
+                            //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                        , cancel: function () {
+                            //右上角关闭回调
+                            $("#div2").css("display", "none");
+                            //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                    });
+                } else {
+                    layer.msg("请选择一个需要重命名的文件")
+                }
+            });
+        })
+    })
 </script>
 
 
@@ -280,5 +470,6 @@
         });
     });
 </script>
+
 
 </html>

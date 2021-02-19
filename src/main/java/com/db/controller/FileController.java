@@ -1,6 +1,7 @@
 package com.db.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.handlers.GsonTypeHandler;
 import com.db.bean.Files;
 import com.db.bean.Folder;
 import com.db.bean.User;
@@ -9,7 +10,9 @@ import com.db.mapper.FolderMapper;
 import com.db.service.IFileService;
 import com.db.service.IFolderService;
 import com.db.utils.Result;
+import com.db.utils.ResultEnum;
 import com.db.utils.ResultUtils;
+import com.google.gson.Gson;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,19 +43,6 @@ public class FileController {
     FileMapper fileMapper;
 
 
-    @RequestMapping("/to_main")
-    public ModelAndView to_main(HttpSession session) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("main");
-        User user = (User) session.getAttribute("user");
-        System.out.println("11111" + user);
-        List<Files> list = fileService.selectFiles(user.getId());
-        modelAndView.addObject("id", user.getId());
-        modelAndView.addObject("file", list);
-
-        return modelAndView;
-    }
-
     @RequestMapping("/to_tree")
     public ModelAndView to_tree(String ids) {
         ModelAndView modelAndView = new ModelAndView();
@@ -62,6 +52,37 @@ public class FileController {
         return modelAndView;
     }
 
+    /**
+     * 单个文件共享设置为共享状态
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("/to_file_share_person")
+    public String toFileSharePerson(@RequestParam(value = "ids") String ids, Integer pid, HttpSession session) {
+        System.out.println("ids=" + ids + "pid=" + pid);
+        String[] split = ids.split("\\,");
+        QueryWrapper queryWrapper = new QueryWrapper();
+        List<Integer> list = new ArrayList<>();
+        long code1 = Math.round((Math.random() + 1) * 1000);
+        String code = String.valueOf(code1);
+        session.setAttribute("code",code);
+        for (String id : split
+        ) {
+            list.add(Integer.valueOf(id));
+        }
+        for (Integer fid : list
+        ) {
+            //通过文件id，查到所有选中的文件具体信息
+            Files files = fileService.getFileById(fid);
+            files.setStatus(1);
+            queryWrapper.eq("id", fid);
+            if (fileMapper.update(files, queryWrapper) <= 0) {
+                return "error";
+            }
+        }
+        return "http://localhost:8084/netdisk/to_download_encryption" + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp提取码："+code;
+    }
 
     /**
      * 文件复制
@@ -78,7 +99,6 @@ public class FileController {
         ) {
             Files files = fileService.getFileById(Integer.valueOf(id));
             Folder folders = folderService.getFolderById(pid);
-
             if (files.getPid() == folders.getPid()) {
                 return "同目录下";
             } else {
@@ -86,8 +106,6 @@ public class FileController {
                 fileService.save(files);
                 return "移动成功";
             }
-            // System.out.println("files="+files);
-            // System.out.println("ids =" + id);
         }
         return "sucess";
     }
@@ -132,7 +150,8 @@ public class FileController {
      */
     @RequestMapping("/uploadfile")
     //@ResponseBody//json交互注解
-    public Result uploadFile(@RequestParam("choosefile") MultipartFile file, Files files) throws IOException {
+    public Result uploadFile(@RequestParam("choosefile") MultipartFile file, Files files, HttpSession session) throws IOException {
+        User user = (User) session.getAttribute("user");
         Result result = ResultUtils.success();
         //上传到服务器的路径
         File projectPath = new File(ResourceUtils.getURL("classpath:").getPath());
@@ -154,11 +173,45 @@ public class FileController {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         //System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
         //数据封装，存入数据库
+        String lastStr = file.getOriginalFilename();
+        if(lastStr.endsWith(".jpg")){
+            files.setTypeid(1);
+        }
+        if(lastStr.endsWith(".png")){
+            files.setTypeid(1);
+        }
+        if(lastStr.endsWith(".ppt")){
+            files.setTypeid(2);
+        }
+        if(lastStr.endsWith(".video")){
+            files.setTypeid(3);
+        }
+        if(lastStr.endsWith(".jpg")){
+            files.setTypeid(1);
+        }
+        if(lastStr.endsWith(".mp3")){
+            files.setTypeid(4);
+        }
+        if(lastStr.endsWith(".pdf")){
+            files.setTypeid(5);
+        }
+        if(lastStr.endsWith(".mp4")){
+            files.setTypeid(4);
+        }
+        if(lastStr.endsWith(".doc")){
+            files.setTypeid(4);
+        }
+        if(lastStr.endsWith(".zip")){
+            files.setTypeid(5);
+        }
+        files.setCreateMan(user.getId());
+        files.setPid(0);
         files.setfName(file.getOriginalFilename());
         files.setfSize((int) file.getSize());
         files.setFurl(upload.getAbsolutePath());
         files.setCreateTime(df.format(new Date()));
         files.setIsDir(0);
+        files.setStatus(0);
         fileService.save(files);
         Map<String, Object> map = new HashMap<>();
         map.put("src", file.getOriginalFilename());
@@ -181,6 +234,7 @@ public class FileController {
     @RequestMapping("/downloadfile")
     public void downfile(@RequestParam(value = "id") Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            System.out.println("call downloadfile");
             Files dfile = fileService.getFileById(id);
             System.out.println(dfile);
             //设置头信息进行下载文件
@@ -216,8 +270,11 @@ public class FileController {
         ModelAndView modelAndView = new ModelAndView();
         List<Files> list2 = new ArrayList<>();
         List<Files> files = fileService.selectLists();
+        System.out.println(files);
+        System.out.println("id = "+id);
         for (Files file : files
         ) {
+            System.out.println("pid = "+file.getPid());
             if (file.getPid().equals(id)) {
                 list2.add(file);
             }
@@ -228,5 +285,98 @@ public class FileController {
         return modelAndView;
     }
 
+    @RequestMapping("/to_main")
+    public ModelAndView to_main(HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("main");
+        User user = (User) session.getAttribute("user");
+        System.out.println("11111" + user);
+        List<Files> list = fileService.selectFiles(user.getId());
+        modelAndView.addObject("id", user.getId());
+        modelAndView.addObject("file", list);
 
+        return modelAndView;
+    }
+
+    /**
+     * 注册公共共享页面
+     */
+    @RequestMapping("/to_common_share")
+    public ModelAndView to_common_share(HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+        //获取参数，保存参数
+        modelAndView.setViewName("common_share");
+        System.out.println("call common_shaare");
+        //List<Files> list2 = fileService.selectLists();
+        //User user = (User) session.getAttribute("user");
+        List<Files> list2 = fileService.selectLists();
+        //modelAndView.addObject("id", user.getId());
+        modelAndView.addObject("list2", list2);
+        // modelAndView.addObject("file", list2);
+        return modelAndView;
+    }
+
+//    /**
+//     * 注册公共共享页面
+//     */
+//    @RequestMapping("/to_common_share")
+//    public ModelAndView toCommonShareWithJSONString(HttpSession session) {
+//        ModelAndView modelAndView = new ModelAndView();
+//        //获取参数，保存参数
+//        modelAndView.setViewName("common_share");
+//        User user = (User) session.getAttribute("user");
+//        List<Files> list2 = fileService.selectLists();
+//        Gson gson = new Gson();
+//        List<String> stringList = new ArrayList<>();
+//        for (int i = 0; i < list2.size(); i++) {
+//            String str = gson.toJson(list2.get(i));
+//            stringList.add(str);
+//        }
+//        modelAndView.addObject("id", user.getId());
+//        modelAndView.addObject("list2", stringList);
+//        // modelAndView.addObject("file", list2);
+//        return modelAndView;
+//    }
+
+//    /**
+//     * 注册公共共享页面
+//     */
+//    @RequestMapping("/to_common_share_file")
+//    public ModelAndView to_common_share_file(@Param(value = "status") Integer status) {
+//        ModelAndView modelAndView = new ModelAndView();
+//        //获取参数，保存参数
+//        List<Files> list2 = fileService.selectLists();
+//        modelAndView.addObject("list2", list2);
+//        modelAndView.setViewName("common_share_file");
+//        return modelAndView;
+//    }
+
+    //删除操作
+    @RequestMapping("/file_delete")
+    public Result deleteFile(Integer id) {
+        System.out.println("call deleteFile");
+        Result result = null;
+        try {
+            fileService.deteList(id);
+            result = ResultUtils.success();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            result = ResultUtils.error(ResultEnum.DELETE_FAILS.getCode(), ResultEnum.DELETE_FAILS.getMsg());
+        }
+        return result;
+    }
+
+    @RequestMapping("/to_Files_tree")
+    public ModelAndView toPermissionTree() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("Files_tree");
+        return mv;
+    }
+
+    @RequestMapping("/Files_tree")
+    public String Permission_tree() {
+        String json = fileService.getFilesTreeJson();
+        System.out.println(json);
+        return json;
+    }
 }

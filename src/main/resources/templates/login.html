@@ -33,6 +33,7 @@
             <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
             <hr class="hr20" >
         </form>
+        <a href="http://localhost:8084/netdisk/admin/toLogin_admin" style="width:100%;" class="layui-btn">管理员登录</a>
     </div>
 <!--    获取上下文路径-->
     <script th:inline="javascript" type="text/javascript">
@@ -56,7 +57,7 @@
                 // });
                 // return false;
                   $.ajax({
-                      url:"http://localhost:8084/netdisk/login",
+                      url:"http://localhost:8084/netdisk/user/login",
                       data:data.field,
                       dataType:"json",
                       success:function (data) {

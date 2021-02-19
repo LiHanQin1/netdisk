@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>移动网盘</title>
+    <link rel="stylesheet" th:href="@{/css/public.css}" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <script type="text/javascript" th:src="@{/js/jquery-1.9.1.js}"></script>
+    <script type="text/javascript" th:src="@{/js/public.js}"></script>
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <!--    <script type="text/javascript" th:src="@{/js/jquery-1.9.1.js}"></script>-->
+    <!--    <script type="text/javascript" th:src="@{/js/public.js}"></script>-->
+    <!--&lt;!&ndash;    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>&ndash;&gt;-->
+    <script type="text/javascript" th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+</head>
+
+<body style="min-width:1000px;">
+<div class="clear"></div>
+<div class="all_files_title">
+    <span class="fr btn_glay mt5" style="float:right;" onclick="location='main.htm';">返回</span><span
+        class="font16 fl mr20">公共共享</span>
+    <span> <div class="btn_glay1" id="div_download"><img src="images/icon/icon13.gif"/>下载</div></span>
+</div>
+<div class="clear"></div>
+<div class="file_list">
+    <div class="file_list1 p10 ">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="main_list text_c" id="testTab">
+            <tr>
+                <th width="2%" scope="col"><input name="d2" type="checkbox" value="" id="check_all2"/></th>
+                <th width="55%" scope="col" class="text_l">文件名</th>
+                <th width="15%" scope="col">共享类型</th>
+                <th width="12%" scope="col">共享用户</th>
+                <th width="20%" scope="col">共享时间</th>
+            </tr>
+            <tr th:each="files:${list2}">
+                <!--                <div th:if="${files.getIsDir()==1}">-->
+                <!--                    <td><input name="d2" type="checkbox" th:value="${files}" /></td>-->
+                <!--                    <td class="text_l"><img src="images/word_icon_s.png" width="24px"class="icon" />-->
+                <!--                        <a th:href="'common_share_file?status='+${files.getStatus()}">[[${files.getfName()}]]</a>-->
+                <!--                    </td>-->
+                <!--                    <td>[[${files.getfSize()}]]</td>-->
+                <!--                    <td class="gray" th:text="${session.user.getUname() }"></td>-->
+                <!--                    <td class="gray">[[${files.getCreateTime()}]]</td>-->
+                <!--                </div>-->
+                <div th:if="${files.getIsDir()==0&&files.getStatus()==1}">
+                    <td><input name="d2" type="checkbox" th:value="${files}"/></td>
+                    <td class="text_l">
+                        <img src="images/img_icon_s.gif" width="24px;" class="icon"/>[[${files.getfName()}]]
+                    </td>
+                    <td>[[${files.getFiletype()}]]</td>
+                    <td class="gray" th:text="${files.getCreateMan()}"></td>
+                    <td class="gray">[[${files.getCreateTime()}]]</td>
+                </div>
+            </tr>
+
+
+            <tr>
+                <td colspan="5" bgcolor="#f3f3f3">
+                    <table border="0" cellpadding="0" cellspacing="0" id="page" align="right">
+                        <tbody>
+                        <tr>
+                            <td class="statusBar">
+                                <input type="hidden" name="currentPage" class="currentPage" value="1"/>
+                                找到6条记录,显示1到 10
+                            </td>
+
+                            <td><a>首页</a></td>
+                            <td><a>上一页</a></td>
+                            <td><a>下一页</a></td>
+                            <td><a href="javascript:void(0)" class="lastPage">末页</a></td>
+                            <td>
+                                每页<select name="pageSize" class="pageSize">
+                                <option value="10" selected="selected">10</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>条
+                            </td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="clear"></div>
+</div>
+
+
+<!--提示弹出层 开始-->
+<div id="cover"></div>
+
+<!--取消共享 弹出框 开始-->
+<div class="boxT1 w450" id="pop_cancel">
+    <div class="bar tcMove"><a class="close" href="javascript:hide('cover','pop_cancel');">&times;</a><span>取消共享</span>
+    </div>
+    <div class="cont">
+        <div class="pl25 line25 download pos_r mt20">
+            <p>取消共享后，该条共享记录将被删除，好友将无法再查看。你确认要取消共享吗？</p>
+        </div>
+        <div class="clear"></div>
+        <div class=" mt60 mb10 text_c">
+            <a class="btnT1 mr10" href="javascript:hide('cover','pop_cancel');">确 定</a>
+            <a class="btnT2" href="javascript:hide('cover','pop_cancel');">取 消</a>
+        </div>
+    </div>
+</div>
+<!--取消共享 弹出框 结束-->
+
+<!--复制到 弹出框 开始-->
+<div class="boxT1 w450" id="pop_copy">
+    <div class="bar tcMove"><a class="close" href="javascript:hide('cover','pop_copy');">&times;</a><span>复制链接</span>
+    </div>
+    <div class="cont line30 text_c">
+        <p class="font14">您已复制链接成功！</p>
+        <div class="mt20 mb10 text_c">
+            <a class="btnT1 mr10" href="javascript:hide('cover','pop_copy');">确 认</a>
+            <a class="btnT2" href="javascript:hide('cover','pop_copy');">取 消</a>
+        </div>
+    </div>
+</div>
+<!--复制到 弹出框 结束-->
+
+<!--图片预览 弹出框 开始-->
+<div class="boxT1" id="pop_pic">
+    <a class="close pos_r fr" href="javascript:hide('cover','pop_pic');"><img src="images/close_delete.png"
+                                                                              class="tc_dele"/></a>
+    <div class="cont text_c line30">
+        <img src="images/pic1.png"/>
+    </div>
+</div>
+<!--图片预览 弹出框 结束-->
+<script type="text/javascript">
+    // 下载
+    $(function () {
+        //注册事件,获取table的id
+        $("#div_download").click(function () {
+            //获取选中的文件ID,JQ获取ID
+            // console.log($("#check_all2").parents("tr").find("td input:checked")[0]);
+            // var id = $("#check_all2").parents("tr").find("td input:checked")[0].innerHTML.trim();
+            // alert(id);
+            var checkedIds = $("#testTab").find("input");
+            var ids = [];
+            var checkedIds2 = $("#testTab").find("td input:checked");
+            console.log(checkedIds2);
+            $.each(checkedIds2, function (index, item) {
+                // console.log(item)
+                var idstr = $(item).val();
+                var idStartIndex = idstr.indexOf("=") + 1;
+                var idEndIndex = idstr.indexOf(",");
+                var id = idstr.substring(idStartIndex,idEndIndex);
+                console.log(id);
+                layer.open({
+                    type: 2,
+                    title: ['文件下载'],
+                    content: 'downloadfile?id=' + id,
+                });
+                //ids.push(id);
+            });
+            // console.log("ids = " + ids);
+        });
+    })
+</script>
+
+
+<script type="text/javascript" th:src="@{/js/jquery-1.9.1.js}"></script>
+<script type="text/javascript" th:src="@{/js/public.js}"></script>
+</body>
+</html>

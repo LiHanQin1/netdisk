@@ -15,4 +15,10 @@ public interface IFileService {
     public List<Files> selectFiles(Integer id);
 
     public Files getFileById(Integer id);
+
+    public void deteList(Integer id);
+
+    public String getFilesTreeJson();
+
+
 }
