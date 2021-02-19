@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Title</title>
+	<link rel="stylesheet" th:href="@{/css/public.css}" type="text/css"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+
+
+</head>
+
+<body style="min-width:1000px;">
+<div class="btn_menu">
+	<div class="btn_orange fl"><img src="images/icon/icon11.gif" />上传文件 <input name="" type="file" class="sc_file" /></div>
+	<div class="btn_glay ml20 mr20" onclick="addTr();"><img src="images/icon/icon12.gif" />新建文件夹</div>
+	<div class="btn_glay1" onclick="show('cover','pop_download');"><img src="images/icon/icon13.gif" />下载</div>
+	<div class="btn_glay2"  onclick="show('cover','pop_delete');"><img src="images/icon/icon14.gif" />删除</div>
+	<div class="btn_glay2" onclick="show('cover','pop_move');"><img src="images/icon/icon15.gif" />移动到</div>
+	<div class="btn_glay2" onclick="show('cover','pop_copy');"><img src="images/icon/icon16.gif" />复制到</div>
+	<div class="btn_glay2" id="rename2"><img src="images/icon/icon17.gif" />重命名</div>
+	<div class="btn_glay3"  onclick="location='wdgx.htm'"><img src="images/icon/icon18.gif" />分享</div>
+	<div class="btn_glay ml20 mr20"><img src="images/icon/icon19.gif" style=" margin-right:0px;" /></div>
+	<div class="fr"><a href="main_list.htm"><img src="images/icon/icon20.gif" /></a><a href="main.htm"><img src="images/icon/icon21_1.gif" /></a></div>
+</div>
+<div class="clear"></div>
+<div class="all_files_title">
+	<input name="d2" type="checkbox" value="" class="fl mr10 mt15" id="check_all2" /> <a href="javascript:history.go(-1)" class="blue">返回上一级</a> | <a href="main_list.htm">全部文件</a> > 2013年图片
+</div>
+<div class="clear"></div>
+<div class="file_list">
+	<div class="file_list1 p10 ">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="main_list text_c" id="testTab">
+			<tr>
+				<th width="2%" scope="col">&nbsp;</th>
+				<th width="55%" scope="col" class="text_l">文件名</th>
+				<th width="13%" scope="col">大小</th>
+				<th width="12%" scope="col">创建人</th>
+				<th width="18%" scope="col">创建时间</th>
+			</tr>
+			<tr th:each="files:${list2}">
+				<div th:if="${files.getIsDir()==1}">
+					<td><input name="d2" type="checkbox" th:value="${files}" /></td>
+					<td class="text_l"><img src="images/word_icon_s.png" width="24px"class="icon" />
+						<a th:href="'to_main_list_file?id='+${files.getId()}">[[${files.getfName()}]]</a>
+					</td>
+					<td>[[${files.getfSize()}]]</td>
+					<td class="gray" th:text="${session.user.getUname() }"></td>
+					<td class="gray">[[${files.getCreateTime()}]]</td>
+				</div>
+				<div th:if="${files.getIsDir()==0&&files.getTypeid()==2}">
+					<td><input name="d2" type="checkbox" th:value="${files}" /></td>
+					<td class="text_l">
+						<img src="images/img_icon_s.gif" width="24px;"class="icon" />[[${files.getfName()}]]
+					</td>
+					<td>[[${files.getfSize()}]]</td>
+					<td class="gray" th:text="${session.user.getUname()}"></td>
+					<td class="gray">[[${files.getCreateTime()}]]</td>
+				</div>
+
+				<div th:if="${files.getIsDir()==0&&files.getTypeid()==3}">
+					<td><input name="d2" type="checkbox" th:value="${files}" /></td>
+					<td class="text_l">
+						<img src="images/img_icon_s.gif" width="24px;"class="icon" />[[${files.getfName()}]]
+					</td>
+					<td>[[${files.getfSize()}]]</td>
+					<td class="gray" th:text="${session.user.getUname()}"></td>
+					<td class="gray">[[${files.getCreateTime()}]]</td>
+				</div>
+
+				<div th:if="${files.getIsDir()==0&&files.getTypeid()==4}">
+					<td><input name="d2" type="checkbox" th:value="${files}" /></td>
+					<td class="text_l">
+						<img src="images/img_icon_s.gif" width="24px;"class="icon" />[[${files.getfName()}]]
+					</td>
+					<td>[[${files.getfSize()}]]</td>
+					<td class="gray" th:text="${session.user.getUname()}"></td>
+					<td class="gray">[[${files.getCreateTime()}]]</td>
+				</div>
+
+				<div th:if="${files.getIsDir()==0&&files.getTypeid()==5}">
+					<td><input name="d2" type="checkbox" th:value="${files}" /></td>
+					<td class="text_l">
+						<img src="images/img_icon_s.gif" width="24px;"class="icon" />[[${files.getfName()}]]
+					</td>
+					<td>[[${files.getfSize()}]]</td>
+					<td class="gray" th:text="${session.user.getUname()}"></td>
+					<td class="gray">[[${files.getCreateTime()}]]</td>
+				</div>
+			</tr>
+
+		</table>
+	</div>
+	<div class="clear"></div>
+</div>
+
+
+<!--提示弹出层 开始-->
+<div id="cover"></div>
+
+<!--下载 弹出框 开始-->
+<div class="boxT1 w550" id="pop_download">
+	<div class="bar tcMove"><a class="close" href="javascript:hide('cover','pop_download');">&times;</a><span>下载</span></div>
+	<div class="cont">
+		<div class="pl25 line25 download pos_r mt20">
+			<p>文件名：<input name="" type="text" class="input1" /><span style="left:360px;">图片 28KB</span></p>
+			<p class="mt20">下载到：<select name="" class="input2 mr5" ><option>C:\Users\Desktop</option></select><input name="" class="btnT3" type="button" value="浏览"/> <span style="left:280px;">剩余64.0 GB</span></p>
+		</div>
+		<div class="clear"></div>
+		<div class=" mt60 mb10 text_c">
+			<a class="btnT2 mr10" href="javascript:hide('cover','pop_download');">直接打开</a>
+			<a class="btnT1 mr10" href="javascript:hide('cover','pop_download');">下载</a>
+			<a class="btnT2" href="javascript:hide('cover','pop_download');">取 消</a>
+		</div>
+	</div>
+</div>
+<!--下载 弹出框 结束-->
+
+<!--删除 弹出框 开始-->
+<div class="boxT1 w450" id="pop_delete">
+	<div class="bar tcMove"><a class="close" href="javascript:hide('cover','pop_delete');">&times;</a><span>确认删除</span></div>
+	<div class="cont text_c line30">
+		<img src="images/dele_pic.png" class="dis_inlblock" />
+		<div class="dis_inlblock"><span>确认要把所选文件放入回收站吗？</span><br /><span class="gray font12">已删除的文件可以在回收站找到</span></div>
+		<div class="mt20 mb10 text_c">
+			<a class="btnT1 mr10" href="javascript:hide('cover','pop_delete');">确 定</a>
+			<a class="btnT2" href="javascript:hide('cover','pop_delete');">取 消</a>
+		</div>
+	</div>
+</div>
+<!--删除 弹出框 结束-->
+
+<!--移动到 弹出框 开始-->
+<div class="boxT1 w450" id="pop_move">
+	<div class="bar tcMove"><a class="close" href="javascript:hide('cover','pop_move');">&times;</a><span>移动到</span></div>
+	<div class="cont line30">
+		<p class="font14">选择移动到的位置</p>
+		<div class="tree_box">
+			<img src="images/tree.gif" />
+		</div>
+		<div class="mt20 mb10 text_c">
+			<a class="btnT1 mr10" href="javascript:hide('cover','pop_move');">确认移动</a>
+			<a class="btnT2" href="javascript:hide('cover','pop_move');">取 消</a>
+		</div>
+	</div>
+</div>
+<!--移动到 弹出框 结束-->
+
+<!--复制到 弹出框 开始-->
+<div class="boxT1 w450" id="pop_copy">
+	<div class="bar tcMove"><a class="close" href="javascript:hide('cover','pop_copy');">&times;</a><span>复制到</span></div>
+	<div class="cont line30">
+		<p class="font14">选择复制到的位置</p>
+		<div class="tree_box">
+			<img src="images/tree.gif" />
+		</div>
+		<div class="mt20 mb10 text_c">
+			<a class="btnT1 mr10" href="javascript:hide('cover','pop_copy');">确认复制</a>
+			<a class="btnT2" href="javascript:hide('cover','pop_copy');">取 消</a>
+		</div>
+	</div>
+</div>
+<!--复制到 弹出框 结束-->
+
+
+<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="js/public.js"></script>
+
+
+</body>
+</html>
